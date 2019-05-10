@@ -52,7 +52,7 @@ des_forca = ['''
      |    
 =========
 ''']
-os.system('color 2' if os.name == 'nt' else '')
+#os.system('color 2' if os.name == 'nt' else '')
 de_novo = 's'
 
 palavras = []
