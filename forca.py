@@ -29,14 +29,17 @@ class Forca :
             return '_'
         else:
             return ' '
+        
+    def diff_letra(self, letra):
+        return letra not in self.wrongLetras and letra not in self.letras
 
     def marca_letra(self,letra):
         letra = letra.lower()
         self.palavra = self.palavra.lower()
-        if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and letra not in self.wrongLetras and letra not in self.letras:
+        if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
             self.letras.append(letra)
             return True
-        elif letra not in self.wrongLetras and letra not in self.letras:
+        elif self.diff_letra(letra):
             self.wrongLetras.append(letra)
             self.chances -= 1
             return True
