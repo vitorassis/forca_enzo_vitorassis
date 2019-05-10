@@ -62,7 +62,7 @@ while de_novo.lower() == 's':
     palavras.append(jogo.palavra)
 
     while jogo.palavra != None and jogo.chances > 0 and not jogo.get_ganhou():
-        os.system('cls' if os.name == 'nt' else 'clear')
+        #os.system('cls' if os.name == 'nt' else 'clear')
 
         print('=========== Jogo da Forca ===========')
         print('Coded by Vitor Assis & Enzo Benvengo ')
@@ -88,7 +88,7 @@ while de_novo.lower() == 's':
         if len(letra) > 0 and letra[0] == '/':
             jogo.testa_palavra(letra)
     if jogo.palavra != None and jogo.get_ganhou()==False:
-        print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra)
+        print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
     elif jogo.palavra != None:
         os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -109,7 +109,7 @@ while de_novo.lower() == 's':
         print()
         print()
         print()
-        print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra)
+        print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
     if jogo.palavra != None:
         de_novo = input('Deseja jogar de novo? <S/N> ')
         while de_novo.lower() != 's' and de_novo.lower() != 'n':

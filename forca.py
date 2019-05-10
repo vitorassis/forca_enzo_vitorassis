@@ -23,7 +23,7 @@ class Forca :
 
     def get_char(self,i):
         palavra = unidecode.unidecode(self.palavra)
-        if palavra[i] in self.letras:
+        if palavra[i] in unidecode.unidecode(''.join(self.letras)):
             return self.palavra[i].upper()
         elif self.palavra[i] != ' ':
             return '_'
@@ -36,6 +36,7 @@ class Forca :
     def marca_letra(self,letra):
         letra = letra.lower()
         self.palavra = self.palavra.lower()
+        print(unidecode.unidecode(self.palavra))
         if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
             self.letras.append(letra)
             return True
