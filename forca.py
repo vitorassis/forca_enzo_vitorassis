@@ -1,21 +1,23 @@
 import random
 import unidecode
+import json
 
 class Forca :
     def is_repeated(self, palavras, words, i):
-        return words[i].split(',')[0] in palavras
+        return words[i]['palavra'] in palavras
 
     def __init__(self, palavras):
-        with open("BDWords.zzt",'r') as f:
-            words = f.read().split('\n')
+        with open("BDWords.json",'r') as f:
+            words = f.read()
+        words = json.loads(words)
         if len(palavras) == len(words):
             self.palavra = None
         else:
             index = random.randint(0,len(words)-1)
             while self.is_repeated(palavras=palavras, words=words, i=index):
                 index = random.randint(0,len(words)-1)
-            palavra = words[index].split(',')
-            self.palavra, self.dica = palavra[0], palavra[1]
+            palavra = words [index]
+            self.palavra, self.dica = palavra['palavra'], palavra['dica']
             self.chances = 7
             self.letras = []
             self.wrongLetras = []
