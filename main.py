@@ -62,7 +62,7 @@ while de_novo.lower() == 's':
     palavras.append(jogo.palavra)
 
     while jogo.palavra != None and jogo.chances > 0 and not jogo.get_ganhou():
-        #os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')
 
         print('=========== Jogo da Forca ===========')
         print('Coded by Vitor Assis & Enzo Benvengo ')
