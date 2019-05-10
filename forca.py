@@ -38,7 +38,6 @@ class Forca :
     def marca_letra(self,letra):
         letra = letra.lower()
         self.palavra = self.palavra.lower()
-        print(unidecode.unidecode(self.palavra))
         if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
             self.letras.append(letra)
             return True
