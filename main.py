@@ -70,7 +70,7 @@ def draw_interface(fim= False):
     print()
     print(des_forca[7 - jogo.chances])
     print()
-    print()
+    print('Categoria: %s' % categoria)
     print('Dica: %s' % jogo.dica)
     print()
     print()
