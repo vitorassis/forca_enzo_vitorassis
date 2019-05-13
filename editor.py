@@ -1,23 +1,30 @@
 import os
 import json
 
-#os.system('color 3' if os.name=='nt' else '')
-os.system('cls' if os.name=='nt' else 'clear')
+os.system('color 3')
 print('====== Jogo da Forca - EDITOR =======')
 print('Coded by Vitor Assis & Enzo Benvengo ')
 print('=====================================')
 print()
 with open("BDWords.json",'r') as f:
     words = f.read()
-if words != []:
+if words != {}:
     words = json.loads(words)
 else:
-    words = []
-newPalavra = input("#> Palavra: ")
-while newPalavra != '':
+    words = {}
+
+palavra = input('#> Palavra: ')
+print(palavra)
+while palavra != '':
+    categoria = input('#> Categoria: ')
     dica = input('#> Dica: ')
-    words.append({'palavra': newPalavra, 'dica': dica})
-    newPalavra = input("#> Palavra: ")
+
+    if categoria not in list(words.keys()):
+        words[categoria] = []
+
+    words[categoria].append({"palavra":palavra, "dica": dica})
+
+    palavra = input('#> Palavra: ')
 
 with open("BDWords.json",'w') as f:
     f.write(json.dumps(words, indent=4, sort_keys=True))

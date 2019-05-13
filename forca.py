@@ -3,25 +3,33 @@ import unidecode
 import json
 
 class Forca :
-    def is_repeated(self, palavras, words, i):
-        return words[i]['palavra'] in palavras
+    def is_repeated(self, palavras, words, i, categoria):
+        search = '%s-%s' % (categoria, words[categoria][i]['palavra'])
+        return search in palavras
 
-    def __init__(self, palavras):
+    def __init__(self, palavras, categoria = None):
+        if categoria != None:
+            with open("BDWords.json",'r') as f:
+                words = f.read()
+            words = json.loads(words)
+            if len(palavras) == len(words[categoria]):
+                self.palavra = None
+            else:
+                index = random.randint(0,len(words[categoria])-1)
+                while self.is_repeated(palavras=palavras, words=words, i=index, categoria=categoria):
+                    index = random.randint(0,len(words[categoria])-1)
+                palavra = words [categoria][index]
+                self.palavra, self.dica = palavra['palavra'], palavra['dica']
+                self.chances = 7
+                self.letras = []
+                self.wrongLetras = []
+                self.tamanho = len(self.palavra)
+        
+    def get_categorias(self):
         with open("BDWords.json",'r') as f:
             words = f.read()
         words = json.loads(words)
-        if len(palavras) == len(words):
-            self.palavra = None
-        else:
-            index = random.randint(0,len(words)-1)
-            while self.is_repeated(palavras=palavras, words=words, i=index):
-                index = random.randint(0,len(words)-1)
-            palavra = words [index]
-            self.palavra, self.dica = palavra['palavra'], palavra['dica']
-            self.chances = 7
-            self.letras = []
-            self.wrongLetras = []
-            self.tamanho = len(self.palavra)
+        return list(words.keys())
 
     def get_char(self,i):
         palavra = unidecode.unidecode(self.palavra)
@@ -38,6 +46,7 @@ class Forca :
     def marca_letra(self,letra):
         letra = letra.lower()
         self.palavra = self.palavra.lower()
+        print(unidecode.unidecode(self.palavra))
         if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
             self.letras.append(letra)
             return True

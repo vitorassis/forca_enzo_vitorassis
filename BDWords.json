@@ -1,42 +1,36 @@
-[
-    {
-        "dica": "Demonstra\u00e7\u00e3o de algo",
-        "palavra": "Exemplo"
-    },
-    {
-        "dica": "Pasta do governo",
-        "palavra": "minist\u00e9rio"
-    },
-    {
-        "dica": "Necess\u00e1rio para combust\u00e3o",
-        "palavra": "combust\u00edvel"
-    },
-    {
-        "dica": "Fen\u00f4meno natural",
-        "palavra": "ciclone"
-    },
-    {
-        "dica": "Competi\u00e7\u00e3o",
-        "palavra": "concurso"
-    },
-    {
-        "dica": "Ser subserviente",
-        "palavra": "submisso"
-    },
-    {
-        "dica": "Falso sin\u00f4nimo de \"Estado\"",
-        "palavra": "governo"
-    },
-    {
-        "dica": "Inerente ao mundo capitalista",
-        "palavra": "emprego"
-    },
-    {
-        "dica": "Manifesta\u00e7\u00e3o",
-        "palavra": "protesto"
-    },
-    {
-        "dica": "Solicita\u00e7\u00e3o de forma culta",
-        "palavra": "Obs\u00e9quio"
-    }
-]
+{
+    "Frutas": [
+        {
+            "dica": "Fruta comum no Brasil",
+            "palavra": "Ma\u00e7\u00e3"
+        },
+        {
+            "dica": "Fruta origin\u00e1ria da \u00c1sia",
+            "palavra": "Abacaxi"
+        }
+    ],
+    "Lugares": [
+        {
+            "dica": "Onde se vive",
+            "palavra": "casa"
+        },
+        {
+            "dica": "Onde se compram coisas",
+            "palavra": "loja"
+        },
+        {
+            "dica": "Vamos quando adoecemos",
+            "palavra": "hospital"
+        },
+        {
+            "dica": "Onde se compra sapatos",
+            "palavra": "Sapataria"
+        }
+    ],
+    "Times": [
+        {
+            "dica": "melhor time do Brasil",
+            "palavra": "Corinthians"
+        }
+    ]
+}
