@@ -18,7 +18,8 @@ class Forca :
     def __init__(self, palavras, categoria = None):
         if self.is_connected():
             if categoria != None:
-                words = json.loads(urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read())
+                read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
+                words = json.loads(read)
                 #with open("BDWords.json",'r') as f:
                 #    words = f.read()
                 #words = json.loads(words)
@@ -43,7 +44,8 @@ class Forca :
         #with open("BDWords.json",'r') as f:
         #    words = f.read()
         #words = json.loads(words)
-        words = json.loads(urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read())
+        read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
+        words = json.loads(read)
         return list(words.keys())
 
     def get_char(self,i):
@@ -61,7 +63,7 @@ class Forca :
     def marca_letra(self,letra):
         letra = letra.lower()
         self.palavra = self.palavra.lower()
-        print(unidecode.unidecode(self.palavra))
+      #  print(unidecode.unidecode(self.palavra))
         if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
             self.letras.append(letra)
             return True
