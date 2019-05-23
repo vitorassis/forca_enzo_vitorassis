@@ -52,12 +52,6 @@ des_forca = ['''
      |    
 =========
 ''']
-os.system('color 2' if os.name == 'nt' else '')
-de_novo = 's'
-
-palavras = []
-
-categoria = None
 
 def draw_interface(fim= False):
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -68,7 +62,7 @@ def draw_interface(fim= False):
     print()
     print('Erradas: %s' % jogo.show_wrong_letras())
     print()
-    print(des_forca[7 - jogo.chances])
+    print(des_forca[6 - jogo.chances])
     print()
     print('Categoria: %s' % categoria)
     print('Dica: %s' % jogo.dica)
@@ -81,10 +75,20 @@ def draw_interface(fim= False):
     print("DIGITE UMA LETRA OU /PALAVRA")
     print()
 
+
+os.system('color 2' if os.name == 'nt' else '')
+de_novo = 's'
+
+palavras = []
+
+categorias = []
+categoria = None
+
 while de_novo.lower() == 's':
-    jogo = Forca(palavras, categoria)
+    jogo = Forca(palavras, categoria, categorias)
     if categoria != None:
-        palavras.append('%s-%s' % (categoria, jogo.palavra))
+        if jogo.palavra != None:
+            palavras.append('%s-%s' % (categoria, jogo.palavra))
 
         while jogo.palavra != None and jogo.palavra != '404' and jogo.chances > 0 and not jogo.get_ganhou():
             draw_interface()
@@ -129,7 +133,7 @@ while de_novo.lower() == 's':
             entry = int(entry)
             if entry > 0 and entry <= len(cats):
                 categoria = cats[entry-1]
-                palavras = []
+                categorias.append(categoria)
             if entry == 0:
                 exit()
 

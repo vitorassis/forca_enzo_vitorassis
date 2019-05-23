@@ -6,6 +6,7 @@ from urllib.request import urlopen
 class Forca :
     def is_repeated(self, palavras, words, i, categoria):
         search = '%s-%s' % (categoria, words[categoria][i]['palavra'])
+        #print(search)
         return search in palavras
 
     def is_connected(self):
@@ -15,23 +16,33 @@ class Forca :
         except: 
             return False                                                                                                                                                                                                                                                                                                                          
 
-    def __init__(self, palavras, categoria = None):
+    def get_max(self, words, categorias):
+        soma = 0
+        for i in categorias:
+            soma += len(words[i])
+        return soma
+
+    def get_len_cat(self, categoria, palavras):
+        return len([s for s in palavras if categoria in s])
+            
+    def __init__(self, palavras, categoria = None, categorias = []):
         if self.is_connected():
             if categoria != None:
                 read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
                 words = json.loads(read)
-                #with open("BDWords.json",'r') as f:
-                #    words = f.read()
-                #words = json.loads(words)
-                if len(palavras) == len(words[categoria]):
+                if len(palavras) == self.get_max(words=words, categorias=categorias): #acabaram as palavras
                     self.palavra = None
+                if self.get_len_cat(palavras=palavras, categoria=categoria) >= len(words[categoria]): #acabaram as palavras daquela categoria
+                    self.palavra = None
+                
                 else:
                     index = random.randint(0,len(words[categoria])-1)
                     while self.is_repeated(palavras=palavras, words=words, i=index, categoria=categoria):
+                       # print(index)
                         index = random.randint(0,len(words[categoria])-1)
                     palavra = words [categoria][index]
                     self.palavra, self.dica = palavra['palavra'], palavra['dica']
-                    self.chances = 7
+                    self.chances = 6
                     self.letras = []
                     self.wrongLetras = []
                     self.tamanho = len(self.palavra)
@@ -41,9 +52,6 @@ class Forca :
             self.palavra = '404'
         
     def get_categorias(self):
-        #with open("BDWords.json",'r') as f:
-        #    words = f.read()
-        #words = json.loads(words)
         read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
         words = json.loads(read)
         return list(words.keys())
@@ -52,10 +60,10 @@ class Forca :
         palavra = unidecode.unidecode(self.palavra)
         if palavra[i] in unidecode.unidecode(''.join(self.letras)):
             return self.palavra[i].upper()
-        elif self.palavra[i] != ' ':
+        elif self.palavra[i] not in [' ', '-']:
             return '_'
         else:
-            return ' '
+            return self.palavra[i]
         
     def diff_letra(self, letra):
         return letra not in self.wrongLetras and letra not in self.letras
