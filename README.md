@@ -1,4 +1,6 @@
-# forca_enzo_vitorassis
+﻿# forca_enzo_vitorassis
+
+First clone this repo or downloading it.
 
 Para rodar, clone ou faça download ZIP do repositório.
 
