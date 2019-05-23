@@ -2,6 +2,8 @@ import random
 import unidecode
 import json
 from urllib.request import urlopen
+from pandas.io.json import json_normalize 
+import os
 
 class Forca :
     def is_repeated(self, palavras, words, i, categoria):
@@ -27,7 +29,7 @@ class Forca :
             
     def __init__(self, palavras, categoria = None, categorias = []):
         if self.is_connected():
-            if categoria != None:
+            if categoria != None and categoria != 'rank':
                 read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
                 words = json.loads(read)
                 if len(palavras) == self.get_max(words=words, categorias=categorias): #acabaram as palavras
@@ -106,3 +108,26 @@ class Forca :
         for letra in self.wrongLetras:
             letras += letra.upper() + ' '
         return letras
+
+    def get_ranking(self, posicoes = 10):
+        dash = '\\' if os.name == 'nt' else '/'
+        with open('files%sdb_scores.json' % dash, 'r') as f:
+            read = f.read()
+        scores = json.loads(read)
+        scores = sorted(scores, key = lambda i: i['pontos']) 
+        i = len(scores)-1 if posicoes > len(scores) else posicoes
+        ranking = []
+        while i >= 0:
+            ranking.append(scores[i].copy())
+            i-=1
+        return ranking
+
+    def salvar_pontuacao(self, nome, pontuacao):
+        dash = '\\' if os.name == 'nt' else '/'
+        with open('files%sdb_scores.json' % dash, 'r') as f:
+            read = f.read()
+        scores = json.loads(read)
+        scores.append(dict({'nome': nome, 'pontos': pontuacao}))
+        scores = json.dumps(scores, indent=4)
+        with open('files%sdb_scores.json' % dash, 'w') as f:
+            f.write(scores)

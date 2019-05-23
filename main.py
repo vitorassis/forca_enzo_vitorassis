@@ -87,11 +87,14 @@ palavras = []
 categorias = []
 categoria = None
 
-#nome = input('#> Nome: ')
+os.system('cls' if os.name == 'nt' else 'clear')
+nome = input('#> Nome: ')
+while nome == '':
+    nome = input('#> Nome: ')
 
 while de_novo.lower() == 's':
     jogo = Forca(palavras, categoria, categorias)
-    if categoria != None:
+    if categoria != None and categoria != 'rank':
         if jogo.palavra != None:
             palavras.append('%s-%s' % (categoria, jogo.palavra))
 
@@ -120,11 +123,29 @@ while de_novo.lower() == 's':
             if de_novo.lower() == 'm':
                 de_novo = 's'
                 categoria = None
+            if de_novo.lower() == 'n':
+                op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>' %(nome, pontuacao)).lower()
+                while op != 's' and op != 'n':
+                    op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao))
+                if op == 's':
+                    jogo.salvar_pontuacao(nome, pontuacao)
+                exit()
         
         else:
             print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
             categoria = None
             input()
+    elif categoria == 'rank':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        top = 10
+        print('Ranking! (%d melhores pontuações)' % top)
+        posicao = 1
+        rank = jogo.get_ranking(top)
+        for player in rank:
+            print('%d -> %s | %d pontos' % (posicao, player['nome'], player['pontos']))
+            posicao += 1
+        input("Aperte uma tecla para voltar.")
+        categoria = None
     elif jogo.palavra != '404':
         os.system('cls' if os.name == 'nt' else 'clear')
         cats = jogo.get_categorias()
@@ -133,6 +154,7 @@ while de_novo.lower() == 's':
         for cat in cats:
             print('%d -> %s' % (num, cat))
             num +=1
+        print('\n%d -> Ranking' % num)
         print('0 -> Sair')
         entry = input('#> ')
         if entry.isnumeric():
@@ -141,8 +163,14 @@ while de_novo.lower() == 's':
                 categoria = cats[entry-1]
                 categorias.append(categoria)
             if entry == 0:
+                op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>').lower()
+                while op != 's' and op != 'n':
+                    op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>')
+                if op == 's':
+                    jogo.salvar_pontuacao(nome, pontuacao)
                 exit()
-
+            if entry == len(cats)+1:
+                categoria = 'rank'
     else:
         print('Sem conexão com a internet, tente novamente depois :\'(')
         exit()
