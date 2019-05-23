@@ -121,7 +121,7 @@ while de_novo.lower() == 's':
             print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
         elif jogo.palavra != None:
             pontuacao += jogo.pontuacao
-            jogo.salvar_pontuacao(nome, pontuacao)
+            #jogo.salvar_pontuacao(nome, pontuacao)
             draw_interface(True)
             print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
         if jogo.palavra != None:
