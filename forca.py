@@ -42,10 +42,11 @@ class Forca :
                         index = random.randint(0,len(words[categoria])-1)
                     palavra = words [categoria][index]
                     self.palavra, self.dica = palavra['palavra'], palavra['dica']
-                    self.chances = 6
+                    self.chances = 7
                     self.letras = []
                     self.wrongLetras = []
                     self.tamanho = len(self.palavra)
+                    self.pontuacao = 100
             else:
                 self.palavra = ''
         else:
@@ -78,6 +79,7 @@ class Forca :
         elif self.diff_letra(letra):
             self.wrongLetras.append(letra)
             self.chances -= 1
+            self.pontuacao -= 10
             return True
         else:
             return False
@@ -87,8 +89,11 @@ class Forca :
         if unidecode.unidecode(palavra.lower()) == unidecode.unidecode(self.palavra.lower()):
             for letra in palavra:
                 self.marca_letra(letra)
+            if self.chances == 7:
+                self.pontuacao += 100
         else:
             self.chances-=1
+            self.pontuacao -= 10
 
     def get_ganhou(self):
         for i in range(self.tamanho):

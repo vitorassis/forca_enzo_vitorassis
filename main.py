@@ -53,16 +53,19 @@ des_forca = ['''
 =========
 ''']
 
+
+pontuacao=0
+
 def draw_interface(fim= False):
     os.system('cls' if os.name == 'nt' else 'clear')
 
     print('=========== Jogo da Forca ===========')
     print('Coded by Vitor Assis & %s ' % ('Enzo Benvengo' if not fim else 'Cristhian Figueredo'))
     print('=====================================')
-    print()
+    print('Pontuação: %d' % pontuacao)
     print('Erradas: %s' % jogo.show_wrong_letras())
     print()
-    print(des_forca[6 - jogo.chances])
+    print(des_forca[7 - jogo.chances])
     print()
     print('Categoria: %s' % categoria)
     print('Dica: %s' % jogo.dica)
@@ -83,6 +86,8 @@ palavras = []
 
 categorias = []
 categoria = None
+
+#nome = input('#> Nome: ')
 
 while de_novo.lower() == 's':
     jogo = Forca(palavras, categoria, categorias)
@@ -105,6 +110,7 @@ while de_novo.lower() == 's':
         if jogo.palavra != None and jogo.get_ganhou()==False:
             print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
         elif jogo.palavra != None:
+            pontuacao += jogo.pontuacao
             draw_interface(True)
             print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
         if jogo.palavra != None:
@@ -127,7 +133,7 @@ while de_novo.lower() == 's':
         for cat in cats:
             print('%d -> %s' % (num, cat))
             num +=1
-        print('\n0 -> Sair')
+        print('0 -> Sair')
         entry = input('#> ')
         if entry.isnumeric():
             entry = int(entry)
