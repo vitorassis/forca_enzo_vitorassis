@@ -13,7 +13,7 @@ python main.py
 
 Linux/ Mac
 ```
-cd Path\to\Folder
+cd Path/to/Directory
 python3 -m venv venv
 . venv/bin/activate
 pip3 install -r requirements.txt
