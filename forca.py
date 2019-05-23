@@ -2,7 +2,7 @@ import random
 import unidecode
 import json
 from urllib.request import urlopen
-from pandas.io.json import json_normalize 
+#from pandas.io.json import json_normalize 
 import os
 
 class Forca :
