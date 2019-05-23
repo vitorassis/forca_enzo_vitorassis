@@ -1,133 +1,177 @@
-import random
-import unidecode
-import json
-from urllib.request import urlopen
-#from pandas.io.json import json_normalize 
+from src.forca import Forca
 import os
 
-class Forca :
-    def is_repeated(self, palavras, words, i, categoria):
-        search = '%s-%s' % (categoria, words[categoria][i]['palavra'])
-        #print(search)
-        return search in palavras
+des_forca = ['''
+ +---+
+ |   |
+     |
+     |
+     |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+     |
+     |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+ |   |
+     |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+/|   |
+     |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+/|\  |
+     |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+/|\  |
+/    |
+     |    
+=========''', '''
+ +---+
+ |   |
+ O   |
+/|\  |
+/ \  |
+     |    
+=========
+''']
 
-    def is_connected(self):
-        try:
-            urlopen('https://www.google.com/', timeout=10)
-            return True
-        except: 
-            return False                                                                                                                                                                                                                                                                                                                          
 
-    def get_max(self, words, categorias):
-        soma = 0
-        for i in categorias:
-            soma += len(words[i])
-        return soma
+pontuacao=0
 
-    def get_len_cat(self, categoria, palavras):
-        return len([s for s in palavras if categoria in s])
-            
-    def __init__(self, palavras, categoria = None, categorias = []):
-        if self.is_connected():
-            if categoria != None and categoria != 'rank':
-                read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
-                words = json.loads(read)
-                if len(palavras) == self.get_max(words=words, categorias=categorias): #acabaram as palavras
-                    self.palavra = None
-                if self.get_len_cat(palavras=palavras, categoria=categoria) >= len(words[categoria]): #acabaram as palavras daquela categoria
-                    self.palavra = None
-                
-                else:
-                    index = random.randint(0,len(words[categoria])-1)
-                    while self.is_repeated(palavras=palavras, words=words, i=index, categoria=categoria):
-                       # print(index)
-                        index = random.randint(0,len(words[categoria])-1)
-                    palavra = words [categoria][index]
-                    self.palavra, self.dica = palavra['palavra'], palavra['dica']
-                    self.chances = 7
-                    self.letras = []
-                    self.wrongLetras = []
-                    self.tamanho = len(self.palavra)
-                    self.pontuacao = 100
-            else:
-                self.palavra = ''
-        else:
-            self.palavra = '404'
+def draw_interface(fim= False):
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print('=========== Jogo da Forca ===========')
+    print('Coded by Vitor Assis & %s ' % ('Enzo Benvengo' if not fim else 'Cristhian Figueredo'))
+    print('=====================================')
+    print('Pontuação: %d' % pontuacao)
+    print('Erradas: %s' % jogo.show_wrong_letras())
+    print()
+    print(des_forca[7 - jogo.chances])
+    print()
+    print('Categoria: %s' % categoria)
+    print('Dica: %s' % jogo.dica)
+    print()
+    print()
+    for i in range(jogo.tamanho):
+        print('%c ' % jogo.get_char(i),end='')
+    print()
+    print()
+    print("DIGITE UMA LETRA OU /PALAVRA")
+    print()
+
+
+os.system('color 2' if os.name == 'nt' else '')
+de_novo = 's'
+
+palavras = []
+
+categorias = []
+categoria = None
+
+os.system('cls' if os.name == 'nt' else 'clear')
+nome = input('#> Nome: ')
+while nome == '':
+    nome = input('#> Nome: ')
+
+while de_novo.lower() == 's':
+    jogo = Forca(palavras, categoria, categorias)
+    if categoria != None and categoria != 'rank':
+        if jogo.palavra != None:
+            palavras.append('%s-%s' % (categoria, jogo.palavra))
+
+        while jogo.palavra != None and jogo.palavra != '404' and jogo.chances > 0 and not jogo.get_ganhou():
+            draw_interface()
+            letra = input('#> ')
+            if letra.isalpha() and len(letra)==1:
+                jogo.marca_letra(letra)
+            if len(letra) > 0 and letra[0] == '/':
+                jogo.testa_palavra(letra)
+
+        if jogo.palavra == '404':
+            print('Sem conexão com a internet, tente novamente depois :\'(')
+            exit()
         
-    def get_categorias(self):
-        read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
-        words = json.loads(read)
-        return list(words.keys())
-
-    def get_char(self,i):
-        palavra = unidecode.unidecode(self.palavra)
-        if palavra[i] in unidecode.unidecode(''.join(self.letras)):
-            return self.palavra[i].upper()
-        elif self.palavra[i] not in [' ', '-']:
-            return '_'
-        else:
-            return self.palavra[i]
+        if jogo.palavra != None and jogo.get_ganhou()==False:
+            print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
+        elif jogo.palavra != None:
+            pontuacao += jogo.pontuacao
+            draw_interface(True)
+            print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
+        if jogo.palavra != None:
+            de_novo = input('Deseja jogar de novo? <S/N> (M- Jogar de novo e trocar a categoria) ')
+            while de_novo.lower() != 's' and de_novo.lower() != 'n' and de_novo.lower() != 'm':
+                de_novo = input('Deseja jogar de novo? <S/N>  (M- Jogar de novo e trocar categoriaia) ')
+            if de_novo.lower() == 'm':
+                de_novo = 's'
+                categoria = None
+            if de_novo.lower() == 'n':
+                op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>' %(nome, pontuacao)).lower()
+                while op != 's' and op != 'n':
+                    op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao))
+                if op == 's':
+                    jogo.salvar_pontuacao(nome, pontuacao)
+                exit()
         
-    def diff_letra(self, letra):
-        return letra not in self.wrongLetras and letra not in self.letras
-
-    def marca_letra(self,letra):
-        letra = letra.lower()
-        self.palavra = self.palavra.lower()
-      #  print(unidecode.unidecode(self.palavra))
-        if unidecode.unidecode(letra) in unidecode.unidecode(self.palavra) and self.diff_letra(letra):
-            self.letras.append(letra)
-            return True
-        elif self.diff_letra(letra):
-            self.wrongLetras.append(letra)
-            self.chances -= 1
-            self.pontuacao -= 10
-            return True
         else:
-            return False
-
-    def testa_palavra(self, palavra):
-        palavra = palavra[1:]
-        if unidecode.unidecode(palavra.lower()) == unidecode.unidecode(self.palavra.lower()):
-            for letra in palavra:
-                self.marca_letra(letra)
-            if self.chances == 7:
-                self.pontuacao += 100
-        else:
-            self.chances-=1
-            self.pontuacao -= 10
-
-    def get_ganhou(self):
-        for i in range(self.tamanho):
-            if self.get_char(i) == '_':
-                return False
-        return True
-
-    def show_wrong_letras(self):
-        letras = ''
-        for letra in self.wrongLetras:
-            letras += letra.upper() + ' '
-        return letras
-
-    def get_ranking(self, posicoes = 10):
-        dash = '\\' if os.name == 'nt' else '/'
-        with open('files%sdb_scores.json' % dash, 'r') as f:
-            read = f.read()
-        scores = json.loads(read)
-        scores = sorted(scores, key = lambda i: i['pontos']) 
-        i = len(scores)-1 if posicoes > len(scores) else posicoes
-        ranking = []
-        while i >= 0:
-            ranking.append(scores[i].copy())
-            i-=1
-        return ranking
-
-    def salvar_pontuacao(self, nome, pontuacao):
-        dash = '\\' if os.name == 'nt' else '/'
-        with open('files%sdb_scores.json' % dash, 'r') as f:
-            read = f.read()
-        scores = json.loads(read)
-        scores.append(dict({'nome': nome, 'pontos': pontuacao}))
-        scores = json.dumps(scores, indent=4)
-        with open('files%sdb_scores.json' % dash, 'w') as f:
-            f.write(scores)
+            print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
+            categoria = None
+            input()
+    elif categoria == 'rank':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        top = 10
+        print('Ranking! (%d melhores pontuações)' % top)
+        posicao = 1
+        rank = jogo.get_ranking(top)
+        print('Posição\tNome\tPontos')
+        for player in rank:
+            print('%dº\t%s\t%d' % (posicao, player['nome'], player['pontos']))
+            posicao += 1
+        input("Aperte uma tecla para voltar.")
+        categoria = None
+    elif jogo.palavra != '404':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        cats = jogo.get_categorias()
+        num = 1
+        print('Selecione uma categoria: ')
+        for cat in cats:
+            print('%d -> %s' % (num, cat))
+            num +=1
+        print('\n%d -> Ranking' % num)
+        print('0 -> Sair')
+        entry = input('#> ')
+        if entry.isnumeric():
+            entry = int(entry)
+            if entry > 0 and entry <= len(cats):
+                categoria = cats[entry-1]
+                categorias.append(categoria)
+            if entry == 0:
+                op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>').lower()
+                while op != 's' and op != 'n':
+                    op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>')
+                if op == 's':
+                    jogo.salvar_pontuacao(nome, pontuacao)
+                exit()
+            if entry == len(cats)+1:
+                categoria = 'rank'
+    else:
+        print('Sem conexão com a internet, tente novamente depois :\'(')
+        exit()
