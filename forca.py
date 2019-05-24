@@ -56,12 +56,14 @@ des_forca = ['''
 
 pontuacao=0
 
-def draw_interface(fim= False):
+def draw_header(fim=False):
     os.system('cls' if os.name == 'nt' else 'clear')
-
     print('=========== Jogo da Forca ===========')
     print('Coded by Vitor Assis & %s ' % ('Enzo Benvengo' if not fim else 'Cristhian Figueredo'))
     print('=====================================')
+
+def draw_interface(fim= False):
+    draw_header(fim)
     print('Pontuação: %d' % pontuacao)
     print('Erradas: %s' % jogo.show_wrong_letras())
     print()
@@ -87,7 +89,7 @@ palavras = []
 categorias = []
 categoria = None
 
-os.system('cls' if os.name == 'nt' else 'clear')
+draw_header()
 nome = input('#> Nome: ')
 while nome == '' and len(nome) > 6:
     nome = input('#> Nome: ')
@@ -144,6 +146,7 @@ while de_novo.lower() == 's':
             categoria = None
             input()
     elif categoria == 'rank':
+        draw_header()
         os.system('cls' if os.name == 'nt' else 'clear')
         top = 10
         print('Ranking! (%d melhores pontuações)' % top)
@@ -159,7 +162,7 @@ while de_novo.lower() == 's':
         input("Aperte <Enter> para voltar.")
         categoria = None
     elif jogo.palavra != '404':
-        os.system('cls' if os.name == 'nt' else 'clear')
+        draw_header()
         cats = jogo.get_categorias()
         num = 1
         print('Selecione uma categoria: ')
