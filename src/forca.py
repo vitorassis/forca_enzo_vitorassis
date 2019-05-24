@@ -47,7 +47,8 @@ class Forca:
                     self.letras = []
                     self.wrongLetras = []
                     self.tamanho = len(self.palavra)
-                    self.pontuacao = 100
+                    self.pontuacao = palavra['pontos']
+                    self.pontos_max = self.pontuacao
             else:
                 self.palavra = ''
         else:
@@ -80,7 +81,7 @@ class Forca:
         elif self.diff_letra(letra):
             self.wrongLetras.append(letra)
             self.chances -= 1
-            self.pontuacao -= 10
+            self.pontuacao -= self.pontos_max * 0.14
             return True
         else:
             return False
@@ -91,10 +92,10 @@ class Forca:
             for letra in palavra:
                 self.marca_letra(letra)
             if self.chances == 7:
-                self.pontuacao += 100
+                self.pontuacao += self.pontos_max
         else:
             self.chances-=1
-            self.pontuacao -= 10
+            self.pontuacao -= self.pontos_max * 0.14
 
     def get_ganhou(self):
         for i in range(self.tamanho):
