@@ -147,9 +147,9 @@ while de_novo.lower() == 's':
             input()
     elif categoria == 'rank':
         draw_header()
-        os.system('cls' if os.name == 'nt' else 'clear')
         top = 10
         print('Ranking! (%d melhores pontuações)' % top)
+        print()
         posicao = 1
         rank = jogo.get_ranking(top)
         if len(rank):
