@@ -110,6 +110,7 @@ class Forca:
         return letras
 
     def get_ranking(self, posicoes = 10):
+        self.checkExist('db_scores.json')
         dash = '\\' if os.name == 'nt' else '/'
         with open('files%sdb_scores.json' % dash, 'r') as f:
             read = f.read()
@@ -122,7 +123,11 @@ class Forca:
             i-=1
         return ranking
 
+    def checkExist(self, file):
+        pass
+
     def salvar_pontuacao(self, nome, pontuacao):
+        self.checkExist('db_scores.json')
         dash = '\\' if os.name == 'nt' else '/'
         with open('files%sdb_scores.json' % dash, 'r') as f:
             read = f.read()
@@ -134,6 +139,7 @@ class Forca:
 
 
     def get_settings(self):
+        self.checkExist('settings.json')
         dash = '\\' if os.name == 'nt' else '/'
         with open('files%ssettings.json' % dash, 'r') as f:
             read = f.read()
@@ -141,6 +147,7 @@ class Forca:
         return settings
 
     def salvar_setting(self, setting, option):
+        self.checkExist('settings.json')
         dash = '\\' if os.name == 'nt' else '/'
         settings = self.get_settings()
         settings[setting]['valor'] = settings[setting]['opcoes'][option]
