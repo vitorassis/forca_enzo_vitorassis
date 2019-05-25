@@ -12,7 +12,7 @@ class Forca:
 
     def is_connected(self):
         try:
-            urlopen('https://www.google.com/', timeout=10)
+            urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json', timeout=10)
             return True
         except: 
             return False                                                                                                                                                                                                                                                                                                                          
@@ -131,3 +131,25 @@ class Forca:
         scores = json.dumps(scores, indent=4)
         with open('files%sdb_scores.json' % dash, 'w') as f:
             f.write(scores)
+
+
+    def get_settings(self):
+        dash = '\\' if os.name == 'nt' else '/'
+        with open('files%ssettings.json' % dash, 'r') as f:
+            read = f.read()
+        settings = json.loads(read)
+        return settings
+
+    def salvar_setting(self, setting, option):
+        dash = '\\' if os.name == 'nt' else '/'
+        settings = self.get_settings()
+        settings[setting]['valor'] = settings[setting]['opcoes'][option]
+        settings = json.dumps(settings, indent=4)
+        with open('files%ssettings.json' % dash, 'w') as f:
+            f.write(settings)
+
+    def get_setting(self, cod):
+        settings = self.get_settings()
+        for setting in settings:
+            if setting['cod'] == cod:
+                return setting['valor']
