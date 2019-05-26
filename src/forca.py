@@ -124,36 +124,45 @@ class Forca:
         return ranking
 
     def checkExist(self, file):
-        pass
+        dash = '\\' if os.name == 'nt' else '/'
+        if os.path.exists('files%s%s' % (dash, file)):
+            return True
+        if self.is_connected():
+            read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/%s' % file).read().decode('utf-8')
+            with open('files%s%s' % (dash, file), 'w+') as f:
+                f.write(read)
+            return True
+        self.palavra = '404'
+        return False
 
     def salvar_pontuacao(self, nome, pontuacao):
-        self.checkExist('db_scores.json')
-        dash = '\\' if os.name == 'nt' else '/'
-        with open('files%sdb_scores.json' % dash, 'r') as f:
-            read = f.read()
-        scores = json.loads(read)
-        scores.append(dict({'nome': nome, 'pontos': pontuacao}))
-        scores = json.dumps(scores, indent=4)
-        with open('files%sdb_scores.json' % dash, 'w') as f:
-            f.write(scores)
+        if self.checkExist('db_scores.json'):
+            dash = '\\' if os.name == 'nt' else '/'
+            with open('files%sdb_scores.json' % dash, 'r') as f:
+                read = f.read()
+            scores = json.loads(read)
+            scores.append(dict({'nome': nome, 'pontos': pontuacao}))
+            scores = json.dumps(scores, indent=4)
+            with open('files%sdb_scores.json' % dash, 'w') as f:
+                f.write(scores)
 
 
     def get_settings(self):
-        self.checkExist('settings.json')
-        dash = '\\' if os.name == 'nt' else '/'
-        with open('files%ssettings.json' % dash, 'r') as f:
-            read = f.read()
-        settings = json.loads(read)
-        return settings
+        if self.checkExist('settings.json'):
+            dash = '\\' if os.name == 'nt' else '/'
+            with open('files%ssettings.json' % dash, 'r') as f:
+                read = f.read()
+            settings = json.loads(read)
+            return settings
 
     def salvar_setting(self, setting, option):
-        self.checkExist('settings.json')
-        dash = '\\' if os.name == 'nt' else '/'
-        settings = self.get_settings()
-        settings[setting]['valor'] = settings[setting]['opcoes'][option]
-        settings = json.dumps(settings, indent=4)
-        with open('files%ssettings.json' % dash, 'w') as f:
-            f.write(settings)
+        if self.checkExist('settings.json'):
+            dash = '\\' if os.name == 'nt' else '/'
+            settings = self.get_settings()
+            settings[setting]['valor'] = settings[setting]['opcoes'][option]
+            settings = json.dumps(settings, indent=4)
+            with open('files%ssettings.json' % dash, 'w') as f:
+                f.write(settings)
 
     def get_setting(self, cod):
         settings = self.get_settings()
