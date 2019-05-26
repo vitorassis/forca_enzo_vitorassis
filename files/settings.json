@@ -11,7 +11,7 @@
     {
         "cod": "show_nome",
         "nome": "Mostrar nome do jogador",
-        "valor": false,
+        "valor": true,
         "opcoes": [
             true,
             false

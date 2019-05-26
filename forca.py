@@ -97,6 +97,7 @@ while not sair:
     if menu == 9:
         draw_header()
         print('Menu:')
+        print()
         print('1-> Jogar')
         print('2-> Ranking')
         print('3-> Configurações')
@@ -109,12 +110,21 @@ while not sair:
             num = 1
             if nome == '':
                 draw_header()
-                nome = input('#> Nome: ')
+                print('Jogar:')
+                print()
+                nome = input('#> Nome (0-> Voltar ao menu): ')
                 nome = nome if len(nome) <=6 else nome[0:6]
+                if nome.isnumeric() and int(nome) == 0:
+                    menu = 9
+                    nome = ''
             if nome != '':
                 if categoria == '':
                     draw_header()
-                    print('Pontuação: %d' %pontuacao)
+                    print('Jogar')
+                    print()
+                    print('Pontuação: %d' % pontuacao, end = ' ' if jogo.get_setting('show_nome') else '\n')
+                    if jogo.get_setting('show_nome'):
+                        print('\t\tNome: %s' % nome)
                     print('Selecione uma categoria: ')
                     for cat in cats:
                         print('%d -> %s' % (num, cat))

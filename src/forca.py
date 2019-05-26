@@ -121,13 +121,6 @@ class Forca:
                 read = f.read()
             scores = json.loads(read)
             scores = sorted(scores, key = lambda i: i['pontos'], reverse=True) 
-           # i = len(scores)-1 if posicoes > len(scores) else posicoes-1
-            ranking = []
-           # while i >= 0:
-           #     print(i)
-           #     ranking.append(scores[i].copy())
-           #     i-=1
-
             return scores[0:posicoes]
 
     def checkExist(self, file):
