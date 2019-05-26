@@ -75,7 +75,9 @@ def draw_interface(fim= False):
         print('Pontuação Máxima: %d' % jogo.pontos_max)
     else:
         print()
-    print('Pontuação: %d' % pontuacao)
+    print('Pontuação: %d' % pontuacao, end = ' ' if jogo.get_setting('show_nome') else '\n')
+    if jogo.get_setting('show_nome'):
+        print('\t\tNome: %s' % nome)
     print('Erradas: %s' % jogo.show_wrong_letras())
     print(des_forca[7 - jogo.chances])
     print()
@@ -103,34 +105,38 @@ while not sair:
         menu = int(menu if menu.isnumeric() and int(menu) <4 and int(menu) >=0 else 9)
     elif menu == 1:
         cats = jogo.get_categorias()
-        num = 1
-        if nome == '':
-            draw_header()
-            nome = input('#> Nome: ')
-            nome = nome if len(nome) <=6 else ''
-        if nome != '':
-            if categoria == '':
+        if jogo.palavra != '404':
+            num = 1
+            if nome == '':
                 draw_header()
-                print('Pontuação: %d' %pontuacao)
-                print('Selecione uma categoria: ')
-                for cat in cats:
-                    print('%d -> %s' % (num, cat))
-                    num +=1
-                print('\n%d -> Voltar ao menu' % num)
-                entry = input('#> ')
-                if entry.isnumeric():
-                    entry = int(entry)
-                    if entry > 0 and entry <= len(cats):
-                        categoria = cats[entry-1]
-                        categorias.append(categoria)
-                    if entry == len(cats)+1:
-                        if pontuacao > 0:
-                            op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
-                            while op != 's' and op != 'n':
+                nome = input('#> Nome: ')
+                nome = nome if len(nome) <=6 else nome[0:6]
+            if nome != '':
+                if categoria == '':
+                    draw_header()
+                    print('Pontuação: %d' %pontuacao)
+                    print('Selecione uma categoria: ')
+                    for cat in cats:
+                        print('%d -> %s' % (num, cat))
+                        num +=1
+                    print('\n%d -> Voltar ao menu' % num)
+                    entry = input('#> ')
+                    if entry.isnumeric():
+                        entry = int(entry)
+                        if entry > 0 and entry <= len(cats):
+                            categoria = cats[entry-1]
+                            categorias.append(categoria)
+                        if entry == len(cats)+1:
+                            if pontuacao > 0:
                                 op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
-                            if op == 's':
-                                jogo.salvar_pontuacao(nome, pontuacao)
-                        menu = 9
+                                while op != 's' and op != 'n':
+                                    op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
+                                if op == 's':
+                                    jogo.salvar_pontuacao(nome, pontuacao)
+                            menu = 9
+        else:
+            print('Sem conexão com a internet, tente novamente depois :\'(')
+            sair = True
         if categoria != '':
             jogo = Forca(palavras, categoria, categorias)
             if jogo.palavra != None:
@@ -185,35 +191,47 @@ while not sair:
                 input()
     elif menu == 2:
         draw_header()
-        top = 10
-        print('Ranking! (%d melhores pontuações)' % top)
-        print()
+        top = jogo.get_setting('top_rank')
         posicao = 1
         rank = jogo.get_ranking(top)
-        if len(rank):
-            print('Posição\tNome\tPontos')
-            for player in rank:
-                print('%dº\t%s\t%d' % (posicao, player['nome'], player['pontos']))
-                posicao += 1
+        if jogo.palavra != '404':
+            print('Ranking! (%d melhores pontuações)' % top)
+            print()
+            if len(rank):
+                print('Posição\tNome\tPontos')
+                for player in rank:
+                    print('%dº\t%s\t%d' % (posicao, player['nome'], player['pontos']))
+                    posicao += 1
+                while posicao <= top:
+                    print('%dº\t--\t--' % (posicao))
+                    posicao += 1
+            else:
+                print('Sem registros, jogue!')
+            input("Aperte <Enter> para voltar.")
+            menu = 9
         else:
-            print('Sem registros, jogue!')
-        input("Aperte <Enter> para voltar.")
-        menu = 9
+            print('Sem conexão com a internet, tente novamente depois :\'(')
+            sair = True
     elif menu == 3:
         if setting_to_change == 99:
             draw_header()
-            print('Selecione a configuração que deseja alterar:\n')
             settings = jogo.get_settings()
-            op = 1
-            for setting in settings:
-                print('%d-> %s: %s' %(op, setting['nome'], str(setting['valor'])))
-                op += 1
-            print('\n0-> Voltar ao menu   ')
-            entry = input('#> ')
-            setting_to_change = int(entry if entry.isnumeric() and int(entry) <op and int(op) >=0 else 99)
-            if setting_to_change == 0:
-                menu = 9
-                setting_to_change = 99
+
+            if jogo.palavra != '404':
+                print('Selecione a configuração que deseja alterar:\n')
+                op = 1
+                for setting in settings:
+                    print('%d-> %s: %s' %(op, setting['nome'], str(setting['valor'])))
+                    op += 1
+                print('\n0-> Voltar ao menu   ')
+                entry = input('#> ')
+                setting_to_change = int(entry if entry.isnumeric() and int(entry) <op and int(op) >=0 else 99)
+                if setting_to_change == 0:
+                    menu = 9
+                    setting_to_change = 99
+            else:
+                print('Sem conexão com a internet, tente novamente depois :\'(')
+                sair = True
 
         else:
             entry = int(entry)
@@ -221,6 +239,7 @@ while not sair:
                 draw_header()
                 op=1
                 print('Alterar a configuração de: %s' % settings[entry-1]['nome'])
+                print()
                 for opcao in settings[entry-1]['opcoes']:
                     print('%d-> %s' % (op, opcao))
                     op+=1

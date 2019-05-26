@@ -2,10 +2,29 @@
     {
         "cod": "show_max_pnt",
         "nome": "Mostrar pontua\u00e7\u00e3o da palavra",
+        "valor": true,
+        "opcoes": [
+            true,
+            false
+        ]
+    },
+    {
+        "cod": "show_nome",
+        "nome": "Mostrar nome do jogador",
         "valor": false,
         "opcoes": [
             true,
             false
+        ]
+    },
+    {
+        "cod": "top_rank",
+        "nome": "Quantidade de jogadores no Ranking",
+        "valor": 10,
+        "opcoes": [
+            5,
+            10,
+            15
         ]
     }
 ]

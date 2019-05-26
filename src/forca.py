@@ -11,6 +11,7 @@ class Forca:
         return search in palavras
 
     def is_connected(self):
+        #return False
         try:
             urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json', timeout=10)
             return True
@@ -55,9 +56,13 @@ class Forca:
             self.palavra = '404'
         
     def get_categorias(self):
-        read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
-        words = json.loads(read)
-        return list(words.keys())
+        if self.is_connected():
+            self.palavra = ''
+            read = urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/BDWords.json').read().decode('utf-8')
+            words = json.loads(read)
+            return list(words.keys())
+        self.palavra = '404'
+        return None
 
     def get_char(self,i):
         palavra = unidecode.unidecode(self.palavra)
@@ -110,18 +115,19 @@ class Forca:
         return letras
 
     def get_ranking(self, posicoes = 10):
-        self.checkExist('db_scores.json')
-        dash = '\\' if os.name == 'nt' else '/'
-        with open('files%sdb_scores.json' % dash, 'r') as f:
-            read = f.read()
-        scores = json.loads(read)
-        scores = sorted(scores, key = lambda i: i['pontos']) 
-        i = len(scores)-1 if posicoes > len(scores) else posicoes
-        ranking = []
-        while i >= 0:
-            ranking.append(scores[i].copy())
-            i-=1
-        return ranking
+        if self.checkExist('db_scores.json'):
+            dash = '\\' if os.name == 'nt' else '/'
+            with open('files%sdb_scores.json' % dash, 'r') as f:
+                read = f.read()
+            scores = json.loads(read)
+            scores = sorted(scores, key = lambda i: i['pontos']) 
+            i = len(scores)-1 if posicoes > len(scores) else posicoes-1
+            ranking = []
+            while i >= 0:
+                print(i)
+                ranking.append(scores[i].copy())
+                i-=1
+            return ranking
 
     def checkExist(self, file):
         dash = '\\' if os.name == 'nt' else '/'
