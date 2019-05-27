@@ -143,6 +143,9 @@ while not sair:
                                     op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
                                 if op == 's':
                                     jogo.salvar_pontuacao(nome, pontuacao)
+                                    nome=''
+                            pontuacao = 0
+                            categoria =''
                             menu = 9
         else:
             print('Sem conexão com a internet, tente novamente depois :\'(')
@@ -151,14 +154,17 @@ while not sair:
             jogo = Forca(palavras, categoria, categorias)
             if jogo.palavra != None:
                 palavras.append('%s-%s' % (categoria, jogo.palavra))
+            if menu == 1:
+                letra = ''
+                while not sair and jogo.palavra != None and jogo.palavra != '404' and jogo.chances > 0 and not jogo.get_ganhou() and menu == 1 and letra != '/0':
+                    draw_interface()
+                    letra = input('#> ')
+                    if letra.isalpha() and len(letra)==1:
+                        jogo.marca_letra(letra)
+                    if letra != '/0' and len(letra) > 0 and letra[0] == '/':
+                        jogo.testa_palavra(letra)
+                    
 
-            while not sair and jogo.palavra != None and jogo.palavra != '404' and jogo.chances > 0 and not jogo.get_ganhou():
-                draw_interface()
-                letra = input('#> ')
-                if letra.isalpha() and len(letra)==1:
-                    jogo.marca_letra(letra)
-                if len(letra) > 0 and letra[0] == '/':
-                    jogo.testa_palavra(letra)
                 if letra == '/0':
                     if pontuacao > 0:
                         op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
@@ -166,36 +172,45 @@ while not sair:
                             op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
                         if op == 's':
                             jogo.salvar_pontuacao(nome, pontuacao)
-                    exit()
+                            nome=''
+                        pontuacao = 0
+                        menu=9
+                    categoria=''
 
-            if jogo.palavra == '404':
-                print('Sem conexão com a internet, tente novamente depois :\'(')
-                sair = True
-            
-            if jogo.palavra != None and not sair and jogo.get_ganhou()==False:
-                print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
-            elif jogo.palavra != None and not sair:
-                pontuacao += jogo.pontuacao
-                #jogo.salvar_pontuacao(nome, pontuacao)
-                draw_interface(True)
-                print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
-            if jogo.palavra != None and not sair:
-                de_novo = input('Deseja jogar de novo? <S/N> (M- Jogar de novo e trocar a categoria) ')
-                while de_novo.lower() != 's' and de_novo.lower() != 'n' and de_novo.lower() != 'm':
-                    de_novo = input('Deseja jogar de novo? <S/N>  (M- Jogar de novo e trocar categoriaia) ')
-                if de_novo.lower() == 'm':
-                    de_novo = 's'
-                    categoria = ''
-                if de_novo.lower() == 'n':
-                    if pontuacao > 0:
-                        op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
-                        while op != 's' and op != 'n':
+                if jogo.palavra == '404':
+                    print('Sem conexão com a internet, tente novamente depois :\'(')
+                    sair = True
+                
+                if jogo.palavra != None and not sair and jogo.get_ganhou()==False and menu == 1 and letra!='/0':
+                    print('QUE PENA, VOCÊ ERROU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
+                elif jogo.palavra != None and not sair and menu ==1 and letra!='/0':
+                    pontuacao += jogo.pontuacao
+                    #jogo.salvar_pontuacao(nome, pontuacao)
+                    draw_interface(True)
+                    print('VOCÊ ACERTOU! A PALAVRA ERA: %s' % jogo.palavra.capitalize())
+                if jogo.palavra != None and not sair:
+                    de_novo = input('Deseja jogar de novo? <S/N> (M- Jogar de novo e trocar a categoria) ')
+                    while de_novo.lower() != 's' and de_novo.lower() != 'n' and de_novo.lower() != 'm':
+                        de_novo = input('Deseja jogar de novo? <S/N>  (M- Jogar de novo e trocar categoriaia) ')
+                    if de_novo.lower() == 'm':
+                        de_novo = 's'
+                        menu = 1
+                        categoria = ''
+                    if de_novo.lower() == 'n':
+                        if pontuacao > 0:
                             op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
-                        if op == 's':
-                            jogo.salvar_pontuacao(nome, pontuacao)
-                    exit()
+                            while op != 's' and op != 'n':
+                                op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
+                            if op == 's':
+                                jogo.salvar_pontuacao(nome, pontuacao)
+                        nome=''
+                        pontuacao = 0
+                        categoria =''
+                        menu=9
+                    else:
+                        menu = 1
             
-            elif not sair:
+            elif not sair and menu == 1:
                 print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
                 categoria = ''
                 input()
