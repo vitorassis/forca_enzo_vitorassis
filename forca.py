@@ -207,16 +207,13 @@ while not sair:
         if jogo.palavra != '404':
             print('Ranking! (%d melhores pontuações)' % top)
             print()
-            if len(rank):
-                print('Posição\tNome\tPontos')
-                for player in rank:
-                    print('%dº\t%s\t%d' % (posicao, player['nome'], player['pontos']))
-                    posicao += 1
-                while posicao <= top:
-                    print('%dº\t--\t--' % (posicao))
-                    posicao += 1
-            else:
-                print('Sem registros, jogue!')
+            print('Posição\tNome\tPontos')
+            for player in rank:
+                print('%dº\t%s\t%d' % (posicao, player['nome'], player['pontos']))
+                posicao += 1
+            while posicao <= top:
+                print('%dº\t--\t--' % (posicao))
+                posicao += 1
             input("Aperte <Enter> para voltar.")
             menu = 9
         else:
