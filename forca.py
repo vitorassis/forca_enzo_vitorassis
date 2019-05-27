@@ -144,6 +144,7 @@ while not sair:
                                 if op == 's':
                                     jogo.salvar_pontuacao(nome, pontuacao)
                                     nome=''
+                                    palavras= []
                             pontuacao = 0
                             categoria =''
                             menu = 9
@@ -173,6 +174,7 @@ while not sair:
                         if op == 's':
                             jogo.salvar_pontuacao(nome, pontuacao)
                             nome=''
+                            palavras = []
                         pontuacao = 0
                         menu=9
                     categoria=''
@@ -204,6 +206,7 @@ while not sair:
                             if op == 's':
                                 jogo.salvar_pontuacao(nome, pontuacao)
                         nome=''
+                        palavras= []
                         pontuacao = 0
                         categoria =''
                         menu=9
