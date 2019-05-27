@@ -212,11 +212,12 @@ while not sair:
                         menu=9
                     else:
                         menu = 1
-            
-            elif not sair and menu == 1:
-                print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
-                categoria = ''
-                input()
+                elif not sair and jogo.palavra == None:
+                    print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
+                    categoria = ''
+                    input()
+                print(palavras)
+
     elif menu == 2:
         draw_header()
         top = jogo.get_setting('top_rank')
