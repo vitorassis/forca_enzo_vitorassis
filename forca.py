@@ -129,14 +129,14 @@ while not sair:
                     for cat in cats:
                         print('%d -> %s' % (num, cat))
                         num +=1
-                    print('\n%d -> Voltar ao menu' % num)
+                    print('\n0 -> Voltar ao menu')
                     entry = input('#> ')
                     if entry.isnumeric():
                         entry = int(entry)
                         if entry > 0 and entry <= len(cats):
                             categoria = cats[entry-1]
                             categorias.append(categoria)
-                        if entry == len(cats)+1:
+                        if entry == 0:
                             if pontuacao > 0:
                                 op = input('%s, deseja salvar a pontuação de: %d pontos? <S/N>'%(nome, pontuacao)).lower()
                                 while op != 's' and op != 'n':
@@ -268,7 +268,7 @@ while not sair:
                     print('%d-> %s' % (op, opcao))
                     op+=1
                 option = input('#> ')
-                option = int(option if option.isnumeric() and int(option) <op and int(option) >=0 else 1000)
+                option = int(option if option.isnumeric() and int(option) <op and int(option) >0 else 1000)
                 if option != 1000:
                     jogo.salvar_setting(entry-1, option-1)
                     setting_to_change = 99
