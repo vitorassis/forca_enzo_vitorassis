@@ -216,8 +216,6 @@ while not sair:
                     print('Acabaram nossas palavras, cadastre mais pelo editor.py ^-^\nRetornando à seleção de categrias...')
                     categoria = ''
                     input()
-                print(palavras)
-
     elif menu == 2:
         draw_header()
         top = jogo.get_setting('top_rank')
