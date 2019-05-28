@@ -125,6 +125,8 @@ class Forca:
 
     def checkExist(self, file):
         dash = '\\' if os.name == 'nt' else '/'
+        if not os.path.exists('files'):
+            os.mkdir('files')
         if os.path.exists('files%s%s' % (dash, file)):
             return True
         if self.is_connected():
