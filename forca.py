@@ -76,7 +76,7 @@ def draw_interface(fim= False):
     else:
         print()
     print('Pontuação: %d' % pontuacao, end = ' ' if jogo.get_setting('show_nome') else '\n')
-    print(jogo.get_setting('teste'))
+    #print(jogo.get_setting('teste'))
     if jogo.get_setting('show_nome'):
         print('\t\tNome: %s' % nome)
     print('Erradas: %s' % jogo.show_wrong_letras())
