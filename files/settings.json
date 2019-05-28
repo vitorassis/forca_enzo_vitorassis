@@ -20,7 +20,7 @@
     {
         "cod": "top_rank",
         "nome": "Quantidade de jogadores no Ranking",
-        "valor": 5,
+        "valor": 10,
         "opcoes": [
             5,
             10,

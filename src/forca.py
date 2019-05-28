@@ -164,8 +164,24 @@ class Forca:
             with open('files%ssettings.json' % dash, 'w') as f:
                 f.write(settings)
 
+    def new_setting(self, cod):
+        if self.is_connected():
+            read = json.loads(urlopen('https://raw.githubusercontent.com/vitorassis/db_forca_enzo_vitorassis/master/settings.json').read().decode('utf-8'))
+            new = None
+            for setting in read:
+                if setting['cod'] == cod:
+                    new = setting
+            settings = self.get_settings()
+            settings.append(new)
+            string = json.dumps(settings, indent=4)
+            dash = '\\' if os.name == 'nt' else '/'
+            with open('files%ssettings.json' % dash, 'w+') as f:
+                f.write(string)
+
     def get_setting(self, cod):
         settings = self.get_settings()
         for setting in settings:
             if setting['cod'] == cod:
                 return setting['valor']
+        self.new_setting(cod)
+        return self.get_setting(cod)
