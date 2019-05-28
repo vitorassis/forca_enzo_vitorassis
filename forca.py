@@ -248,8 +248,11 @@ while not sair:
                 for setting in settings:
                     print('%d-> %s: %s' %(op, setting['nome'], str(setting['valor'])))
                     op += 1
-                print('\n0-> Voltar ao menu   ')
+                print('\n%d-> Redefinir padrões' % op)
+                print('0-> Voltar ao menu')
                 entry = input('#> ')
+                if entry.isnumeric and int(entry) == op:
+                    jogo.erase_settings()
                 setting_to_change = int(entry if entry.isnumeric() and int(entry) <op and int(op) >=0 else 99)
                 if setting_to_change == 0:
                     menu = 9
@@ -264,7 +267,7 @@ while not sair:
                 draw_header()
                 op=1
                 print('Alterar a configuração de: %s' % settings[entry-1]['nome'])
-                print()
+                print('Valor Atual: %s' % settings[entry-1]['valor'])
                 for opcao in settings[entry-1]['opcoes']:
                     print('%d-> %s' % (op, opcao))
                     op+=1

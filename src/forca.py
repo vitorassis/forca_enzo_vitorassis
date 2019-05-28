@@ -115,7 +115,7 @@ class Forca:
         return letras
 
     def get_ranking(self, posicoes = 10):
-        if self.checkExist('db_scores.json'):
+        if self.check_exist('db_scores.json'):
             dash = '\\' if os.name == 'nt' else '/'
             with open('files%sdb_scores.json' % dash, 'r') as f:
                 read = f.read()
@@ -123,7 +123,7 @@ class Forca:
             scores = sorted(scores, key = lambda i: i['pontos'], reverse=True) 
             return scores[0:posicoes]
 
-    def checkExist(self, file):
+    def check_exist(self, file):
         dash = '\\' if os.name == 'nt' else '/'
         if not os.path.exists('files'):
             os.mkdir('files')
@@ -138,7 +138,7 @@ class Forca:
         return False
 
     def salvar_pontuacao(self, nome, pontuacao):
-        if self.checkExist('db_scores.json'):
+        if self.check_exist('db_scores.json'):
             dash = '\\' if os.name == 'nt' else '/'
             with open('files%sdb_scores.json' % dash, 'r') as f:
                 read = f.read()
@@ -150,7 +150,7 @@ class Forca:
 
 
     def get_settings(self):
-        if self.checkExist('settings.json'):
+        if self.check_exist('settings.json'):
             dash = '\\' if os.name == 'nt' else '/'
             with open('files%ssettings.json' % dash, 'r') as f:
                 read = f.read()
@@ -158,7 +158,7 @@ class Forca:
             return settings
 
     def salvar_setting(self, setting, option):
-        if self.checkExist('settings.json'):
+        if self.check_exist('settings.json'):
             dash = '\\' if os.name == 'nt' else '/'
             settings = self.get_settings()
             settings[setting]['valor'] = settings[setting]['opcoes'][option]
@@ -187,3 +187,8 @@ class Forca:
                 return setting['valor']
         self.new_setting(cod)
         return self.get_setting(cod)
+    
+    def erase_settings(self):
+        dash = '\\' if os.name == 'nt' else '/'
+        os.remove('files%ssettings.json' % dash)
+        self.check_exist('settings.json')
