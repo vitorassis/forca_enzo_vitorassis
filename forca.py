@@ -176,7 +176,7 @@ while not sair:
                             jogo.salvar_pontuacao(nome, pontuacao)
                             nome=''
                             palavras = []
-                        pontuacao = 0
+                            pontuacao = 0
                         menu=9
                     categoria=''
 
