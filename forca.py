@@ -93,6 +93,8 @@ def draw_interface(fim= False):
     print("DIGITE UMA LETRA OU /PALAVRA (/0 - Sair)")
     print()
 
+msg = ''
+
 while not sair:
     jogo = Forca(palavras)
     if menu == 9:
@@ -112,13 +114,21 @@ while not sair:
             if nome == '':
                 draw_header()
                 print('Jogar:')
-                print()
+                if msg:
+                    print('*%s*' %msg)
+                else:
+                    print()
                 nome = input('#> Nome (0-> Voltar ao menu): ')
                 nome = nome if len(nome) <=6 else nome[0:6]
-                if nome.isnumeric() and int(nome) == 0:
+                if (nome.isnumeric() and int(nome) == 0):
                     menu = 9
                     nome = ''
+                    msg=''
+                if jogo.nome_repeated(nome):
+                    nome = ''
+                    msg = 'Nome já em uso'
             if nome != '':
+                msg=''
                 if categoria == '':
                     draw_header()
                     print('Jogar')

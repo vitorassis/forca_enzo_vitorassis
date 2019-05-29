@@ -10,6 +10,16 @@ class Forca:
         #print(search)
         return search in palavras
 
+    def nome_repeated(self, nome):
+        dash = '\\' if os.name == 'nt' else '/'
+        with open('files%sdb_scores.json' % dash, 'r') as f:
+            read = f.read()
+        scores = json.loads(read)
+        for score in scores:
+            if score['nome'] == nome:
+                return True
+        return False
+
     def is_connected(self):
         #return False
         try:
